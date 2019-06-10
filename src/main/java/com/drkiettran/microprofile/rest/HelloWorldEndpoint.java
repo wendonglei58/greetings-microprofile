@@ -1,6 +1,7 @@
 package com.drkiettran.microprofile.rest;
 
 import java.net.UnknownHostException;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,23 +23,23 @@ public class HelloWorldEndpoint {
 		String date = year + "/" + month + "/" + day;
 		Message message = new Message();
 		message.setName("Thorntail");
-		message.setMessage(date);
+		message.setMessage("Request date: " + date);
+		message.setDate(new Date());
 		return Response.status(200).entity(message).build();
 	}
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/{year}/{month}/{day}")
-	public Response doPutDate(@PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day,
-			Message inMessage) throws UnknownHostException {
-		System.out.println("inMessage: " + inMessage.getName() + ":" + inMessage.getMessage());
+	@Path("/put")
+	public Response doPutDate(Message inMessage) throws UnknownHostException {
+		System.out.println("inMessage {}: " + inMessage);
 
-		String date = year + "/" + month + "/" + day;
 		Message message = new Message();
 		Greetings greetings = new Greetings();
-		message.setName(inMessage.getName());
+		message.setName("Thorntail to " + inMessage.getName());
 		message.setMessage(greetings.hello(inMessage.getName()));
+		message.setDate(new Date());
 		return Response.status(200).entity(message).build();
 	}
 }
